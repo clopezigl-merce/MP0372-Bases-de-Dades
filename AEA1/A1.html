@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="ca"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A1 · M0372</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="../assets/css/style.css"></head><body>
+<header class="top"><div class="w"><a class="brand" href="../index.html">M0372<b>_</b>BD</a><nav><a href="../index.html#aea">AEA</a><a href="../index.html#ra">RA1</a><a href="../AEA1/index.html">AEA1</a></nav></div></header><div class="hero"><div class="w"><span class="pill">AEA1</span><h1>A1 · Introducció a les BD</h1></div></div>
+<main class="w"><p><a href="index.html">← AEA1</a></p><h2>Part A · Moure’t pel Drive</h2><ol>
+<li>Al Drive del correu del centre, crea la carpeta <b>M0372 - NomCognom</b> i dins la subcarpeta <b>AEA-1: Intro al BD (RA1)</b>.</li>
+<li>Descarrega l’activitat A1 (docx) del Classroom i puja-la a la carpeta. Visualitza el Drive en mode llista.</li>
+<li>Edita el document i posa el teu nom a la capçalera.</li>
+<li>Comparteix la <b>carpeta</b> (no el document) amb el professor en mode <b>edició</b>, sense notificar.</li>
+<li>Copia l’enllaç de la carpeta i enganxa’l al Classroom.</li>
+<li>Posa l’aplicació «Fes una captura de pantalla» a la barra de tasques d’Ubuntu.</li></ol>
+<h2>Part C · Teoria: elements d’un SGBD</h2><div class="tw"><table><tr><th>Element</th><th>Funció</th></tr>
+<tr><td>DDL</td><td>Crea, modifica i elimina estructures: <code>CREATE</code>, <code>ALTER</code>, <code>DROP</code>.</td></tr>
+<tr><td>DML</td><td>Consulta i modifica dades: <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>.</td></tr>
+<tr><td>DCL</td><td>Permisos i accessos: <code>GRANT</code>, <code>REVOKE</code>.</td></tr>
+<tr><td>Gestió de transaccions</td><td>Operacions coherents (ACID).</td></tr><tr><td>Sistema d’emmagatzematge</td><td>Gestiona el disc.</td></tr>
+<tr><td>Control de concurrència</td><td>Evita conflictes entre usuaris simultanis.</td></tr><tr><td>Control de recuperació</td><td>Recupera dades després d’un fallada (TCL: <code>COMMIT</code>, <code>ROLLBACK</code>).</td></tr>
+<tr><td>Seguretat</td><td>Protegeix i restringeix l’accés.</td></tr></table></div>
+<h2>Classificació de SGBD</h2><div class="tw"><table><tr><th>Tipus</th><th>Descripció</th><th>Exemples</th></tr>
+<tr><td>Relacional (RDBMS)</td><td>Taules; els més comuns.</td><td>MySQL, PostgreSQL, Oracle</td></tr>
+<tr><td>No relacional (NoSQL)</td><td>Dades flexibles i distribuïdes.</td><td>MongoDB, Cassandra</td></tr>
+<tr><td>Orientat a objectes</td><td>Dades com a objectes.</td><td>db4o</td></tr>
+<tr><td>Jeràrquic i en xarxa</td><td>Models antics.</td><td>IMS (IBM), IDS</td></tr>
+<tr><td>Distribuït</td><td>Múltiples ubicacions, alta disponibilitat.</td><td>Clústers</td></tr></table></div>
+<p>Vídeos: <a href="https://www.youtube.com/watch?v=LmiFNF3ZaLk">elements d’un SGBD</a> · <a href="https://www.youtube.com/watch?v=UuDBv5pOcSQ">BD i videojocs</a> · <a href="https://www.youtube.com/watch?v=xkMDTulV8r4">SQL vs NoSQL</a></p>
+<h2>Part D · Fem l’activitat</h2><ol><li><b>Elements d’un SGBD:</b> assigna cada operació del document a un element i explica’n la funció.</li>
+<li><b>Sigles:</b> SQL, DML, DDL i DCL: significat i un exemple curt de sentència.</li>
+<li><b>Escenaris:</b> tria el tipus de SGBD per a cada cas (botiga online, xarxa social, streaming, videojocs, banca) i justifica-ho.</li>
+<li><b>Taules:</b> codifica els alumnes de 1r ASIX en una taula, nomena la BD (<code>BD_Nom.bd</code>) i les taules (<code>T_Nom</code>), fes que la 1a columna sigui única (identificador) i afegeix-hi els mòduls matriculats.</li>
+<li>Reflexiona: és òptim tenir-ho tot en una taula? Divideix-ho en més taules.</li></ol>
+<h3>Exemples en SQL (Oracle, esquema HR)</h3><pre>-- DDL
+<b>CREATE TABLE</b> t_alumne (
+  dni     VARCHAR2(10) <b>PRIMARY KEY</b>,
+  nom     VARCHAR2(60),
+  edat    NUMBER(3),
+  estudis VARCHAR2(30),
+  cicle   VARCHAR2(10)
+);
+-- DML
+<b>SELECT</b> employee_id, first_name, last_name, salary <b>FROM</b> hr.employees <b>WHERE</b> department_id = 60;
+<b>INSERT INTO</b> hr.departments (department_id, department_name, location_id) <b>VALUES</b> (280, 'Formació', 1700);
+<b>UPDATE</b> hr.employees <b>SET</b> salary = salary * 1.05 <b>WHERE</b> job_id = 'IT_PROG';
+-- DCL
+<b>GRANT SELECT ON</b> hr.employees <b>TO</b> u_david;
+<b>REVOKE SELECT ON</b> hr.employees <b>FROM</b> u_david;
+-- TCL
+<b>COMMIT</b>;  <b>ROLLBACK</b>;</pre>
+<div class="tip">Recorda la diferència: la <b>BD</b> són les dades; el <b>SGBD</b> és el programari que les gestiona.</div></main><footer><div class="w">ASIX · M0372 Gestió de bases de dades · Curs 2026-2027 · Nom del docent</div></footer></body></html>

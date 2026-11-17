@@ -1,0 +1,20 @@
+<!DOCTYPE html><html lang="ca"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>B9 · M0372</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="../assets/css/style.css"></head><body>
+<header class="top"><div class="w"><a class="brand" href="../index.html">M0372<b>_</b>BD</a><nav><a href="../index.html#aea">AEA</a><a href="../AEA1/index.html">AEA1</a><a href="../AEA2/index.html">AEA2</a></nav></div></header><div class="hero"><div class="w"><span class="pill">AEA2</span><h1>B9 · JOINS / Unions</h1><p>Producte cartesià i tipus de JOIN.</p></div></div>
+<main class="w"><p><a class="btn g b" href="index.html"><span class="a">←</span> AEA2</a></p><h2>Producte cartesià</h2><p>Si seleccionem <code>employees</code> i <code>departments</code> sense relacionar-les, SQL multiplica les files: 107 × 27 = 2.889.</p><h2>Tipus de JOIN</h2><div class="tw"><table><tr><th>Tipus</th><th>Resultat</th></tr><tr><td><code>JOIN</code> = <code>INNER JOIN</code></td><td>Només files amb parella (106 a HR).</td></tr><tr><td><code>LEFT JOIN</code></td><td>Totes les de l’esquerra, amb NULL si no hi ha parella (107).</td></tr><tr><td><code>RIGHT JOIN</code></td><td>Totes les de la dreta (122).</td></tr><tr><td><code>FULL OUTER JOIN</code></td><td>Totes dues bandes (123).</td></tr><tr><td><code>NATURAL JOIN</code></td><td>Detecta sol el camp comú; <b>deprecated</b>, no l’usem.</td></tr></table></div><h2>Exemples</h2><pre>-- Sense <b>JOIN</b>
+<b>SELECT</b> employee_id, last_name, department_id, department_name
+<b>FROM</b> employees E, departments D
+<b>WHERE</b> E.department_id = D.department_id;
+
+-- <b>USING</b> (més curt)
+<b>SELECT</b> employee_id, last_name, department_id, department_name
+<b>FROM</b> employees <b>JOIN</b> departments <b>USING</b> (department_id);
+
+-- <b>ON</b> (cal posar àlies)
+<b>SELECT</b> E.employee_id, E.last_name, E.department_id, D.department_name
+<b>FROM</b> employees E <b>JOIN</b> departments D <b>ON</b> (E.department_id = D.department_id);
+
+-- Només els nuls de les dues bandes (17 files)
+<b>SELECT</b> E.employee_id, E.last_name, E.department_id, D.department_name
+<b>FROM</b> employees E <b>FULL OUTER JOIN</b> departments D <b>ON</b> (E.department_id = D.department_id)
+<b>WHERE</b> E.department_id <b>IS NULL</b> <b>OR</b> D.department_id <b>IS NULL</b>;</pre><div class="row"><span class="m">Vídeos:</span><a class="btn g v" href="https://www.youtube.com/watch?v=h4d9KsyoSQI">intro als JOINS</a><a class="btn g v" href="https://www.youtube.com/watch?v=Zi4yDuwYv18">tipus de JOINS</a><a class="btn g v" href="https://www.youtube.com/watch?v=qCfMFF1SjjQ">JOINS (8 min)</a></div><p>Les files que surten depenen de les dades de la teva còpia de HR.</p><p><a class="btn" href="docs/Activitat_B9.docx">Descarrega l’activitat (docx)</a></p></main><footer><div class="w">ASIX · M0372 Gestió de bases de dades · Curs 2026-2027 · Nom del docent</div></footer><a class="btn home" href="../index.html"><span class="a">⌂</span> Inici</a></body></html>

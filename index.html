@@ -1,4 +1,16 @@
-<!DOCTYPE html><html lang="ca"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Inici · M0372</title>
+<!DOCTYPE html><html lang="ca"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Entrada · M0372</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/css/style.css"></head><body>
-<header class="top"><div class="w"><a class="brand" href="index.html">M0372<b>_</b>BD</a><nav><a href="index.html#aea">AEA</a><a href="teoria.html">Teoria</a><a href="editor-sql.html">Editor SQL</a></nav></div></header><div class="hero"><div class="w"><span class="pill">ASIX 1r · M0372</span><h1>Gestió de bases de dades</h1><p>Aprèn els fonaments de les bases de dades i practica SQL.</p></div></div>
-<main class="w"><ul class="grid big"><li><a class="card" href="teoria.html"><span class="c">📖</span><h3>Teoria</h3><p>Apunts, activitats i resultats d’aprenentatge de les AEA1 i AEA2.</p></a></li><li><a class="card" href="editor-sql.html"><span class="c">▶</span><h3>Editor SQL</h3><p>Executa consultes sobre la base de dades HR d’Oracle directament al navegador.</p></a></li></ul></main><footer><div class="w">ASIX · M0372 Gestió de bases de dades · Curs 2026-2027 · Nom del docent · <a href="professor.html" style="color:#cfdcec">🔒 Professor</a></div></footer><script src="assets/js/lock.js"></script></body></html>
+<header class="top"><div class="w"><a class="brand" href="inici.html">M0372<b>_</b>BD</a></div></header><div class="hero"><div class="w"><span class="pill">ASIX 1r · M0372</span><h1>Gestió de bases de dades</h1><p>Qui ets? Tria com vols entrar.</p></div></div>
+<main class="w"><ul class="grid big"><li><a class="card" id="alu" href="inici.html"><span class="c">🎓</span><h3>Alumne</h3><p>Entra a la teoria i a l’editor SQL.</p></a></li>
+<li><button class="card" id="pcard" type="button"><span class="c">🔒</span><h3>Professor</h3><p>Accés amb usuari i contrasenya.</p></button></li></ul>
+<div id="lg" class="tip who" hidden><b>Accés professor</b><div class="row"><input id="us" type="text" placeholder="Usuari" autocomplete="username"><input id="pw" type="password" placeholder="Contrasenya" autocomplete="current-password"><button class="btn" id="in">Entra</button></div><p id="msg" class="err"></p></div>
+<script>
+const $=i=>document.getElementById(i);
+const sha=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode('M0372|'+s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
+$('alu').onclick=()=>{sessionStorage.removeItem('prof');sessionStorage.removeItem('profuser')};
+$('pcard').onclick=()=>{$('lg').hidden=false;$('us').focus()};
+$('pw').onkeydown=e=>{if(e.key=='Enter')$('in').click()};
+$('in').onclick=async()=>{try{const c=await(await fetch('assets/data/exam.json?t='+Date.now(),{cache:'no-store'})).json(),u=$('us').value.trim().toLowerCase();
+if(c.teachers&&c.teachers[u]&&c.teachers[u]===await sha(u+'|'+$('pw').value)){sessionStorage.setItem('prof','1');sessionStorage.setItem('profuser',u);location.href='inici.html'}
+else $('msg').textContent='Usuari o contrasenya incorrectes.'}catch(e){$('msg').textContent='No s’ha pogut comprovar l’accés.'}};
+</script></main><footer><div class="w">ASIX · M0372 Gestió de bases de dades · Curs 2026-2027 · Nom del docent · <a href="professor.html" style="color:#cfdcec">🔒 Professor</a></div></footer><script src="assets/js/lock.js"></script></body></html>

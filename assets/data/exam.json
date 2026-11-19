@@ -2,5 +2,8 @@
   "locked": false,
   "blockEditor": false,
   "message": "Examen en curs. La teoria no està disponible fins que el professor la desbloquegi.",
-  "teacherHash": ""
+  "teachers": {
+    "carles": "a06d69ba09471053ff485f48869802b28d24c1344fa564aa7b85e9f28c4e4895",
+    "bruno": "94db0a62bfb937b12fb32c15a1187c8b443f974969a69d27da84af8c8e9749f4"
+  }
 }

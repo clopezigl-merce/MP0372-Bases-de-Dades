@@ -38,7 +38,7 @@ function run(sql){const r=db.exec(pre(sql));return r}
 function show(el,sql){try{const r=run(sql);el.innerHTML=r.length?r.map(table).join(''):'<p class="m">Sentència executada ('+db.getRowsModified()+' files afectades).</p>'}catch(e){el.innerHTML='<p class="err">Error: '+esc(e.message)+'</p>'}}
 function schema(){const q=db.exec("SELECT name FROM sqlite_master WHERE type='table' AND name<>'dual' ORDER BY name")[0].values;
 $('sch').innerHTML=q.map(([t])=>'<details><summary>'+t+'</summary><div class="m">'+db.exec('PRAGMA table_info('+t+')')[0].values.map(c=>c[1]+(c[5]?' 🔑':'')).join('<br>')+'</div></details>').join('')}
-async function load(){db=new SQL.Database();reg();const t=await Promise.all(['hr-schema.sql','hr-data.sql'].map(f=>fetch((typeof BASE=='undefined'?'../':BASE)+'assets/data/'+f).then(r=>{if(!r.ok)throw new Error(f);return r.text()})));
+async function load(){db=new SQL.Database();reg();const t=await Promise.all(['hr-schema.sql','hr-data.sql'].map(f=>fetch((typeof BASE=='undefined'?'../':BASE)+'assets/data/'+f,{cache:'no-cache'}).then(r=>{if(!r.ok)throw new Error(f);return r.text()})));
 t.forEach(x=>db.exec(clean(x)));schema()}
 const G={B3:'B3 · Inici SQL',B4:'B4 · Restricció i petició de dades',B8:'B8 · Funcions de grup',B9:'B9 · JOINS',B10:'B10 · Subconsultes'};
 const EX=[
@@ -72,4 +72,4 @@ sol.onclick=()=>{o.innerHTML='<pre>'+esc(ex[2])+'</pre>'};c.appendChild(d)})}
 $('go').onclick=()=>show($('out'),$('sql').value);$('clr').onclick=()=>{$('sql').value='';$('out').innerHTML=''};
 $('rst').onclick=async()=>{vars={};await load();$('out').innerHTML='<p class="m">Base de dades restaurada.</p>'};
 $('sql').addEventListener('keydown',e=>{if(e.ctrlKey&&e.key=='Enter')show($('out'),$('sql').value)})}
-catch(e){$('st').textContent='No s’ha pogut carregar: '+e.message+'. Cal obrir la pàgina des de GitHub Pages (o un servidor local) amb Internet.'}})();
+catch(e){const m='No s’ha pogut carregar la BD HR: '+e.message+'. Cal GitHub Pages (o un servidor local) amb Internet.';if($('st'))$('st').textContent=m;if($('sch'))$('sch').innerHTML='<p class="err">'+esc(m)+'</p>'}})();

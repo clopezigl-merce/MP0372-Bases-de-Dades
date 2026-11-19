@@ -1,27 +1,28 @@
 <!DOCTYPE html><html lang="ca"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Professor · M0372</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/css/style.css"></head><body>
-<header class="top"><div class="w"><a class="brand" href="index.html">M0372<b>_</b>BD</a><nav><a href="index.html#aea">AEA</a><a href="teoria.html">Teoria</a><a href="editor-sql.html">Editor SQL</a></nav></div></header><div class="hero"><div class="w"><span class="pill">Professor</span><h1>Accés i bloqueig</h1><p>Controla si la teoria és visible durant un examen.</p></div></div>
-<main class="w"><div id="login" class="tip" hidden><b>Accés professor.</b> Introdueix la contrasenya per veure la teoria durant un bloqueig.
-<div class="row"><input id="pw" type="password" placeholder="Contrasenya" autocomplete="off"><button class="btn" id="in">Entra</button></div><p id="msg" class="err"></p></div>
-<div id="panel" hidden><div class="tip">🎓 <b>Mode professor actiu.</b> Estat actual del bloqueig de teoria: <b id="state"></b>. <button class="btn g" id="out" style="padding:.3rem .9rem">Surt</button></div></div>
+<header class="top"><div class="w"><a class="brand" href="inici.html">M0372<b>_</b>BD</a><nav><a href="inici.html#aea">AEA</a><a href="teoria.html">Teoria</a><a href="editor-sql.html">Editor SQL</a></nav></div></header><div class="hero"><div class="w"><span class="pill">Professor</span><h1>Accés i bloqueig</h1><p>Controla si la teoria és visible durant un examen.</p></div></div>
+<main class="w"><div id="login" class="tip" hidden><b>Accés professor.</b> Entra amb el teu usuari per veure la teoria durant un bloqueig.
+<div class="row"><input id="us" type="text" placeholder="Usuari" autocomplete="username"><input id="pw" type="password" placeholder="Contrasenya" autocomplete="current-password"><button class="btn" id="in">Entra</button></div><p id="msg" class="err"></p></div>
+<div id="panel" hidden><div class="tip">🎓 <b>Mode professor actiu</b> (<span id="who"></span>). Bloqueig de teoria: <b id="state"></b>. <button class="btn g" id="out" style="padding:.3rem .9rem">Surt</button></div></div>
 <div id="gen" class="gen" hidden><h2>Generador d’exam.json</h2>
-<p>Marca què vols i copia el resultat dins <code>assets/data/exam.json</code> del repositori (edita’l a GitHub i fes <i>commit</i>). Als alumnes els canvia en 1–10 minuts.</p>
+<p>Marca què vols i copia el resultat dins <code>assets/data/exam.json</code> del repositori (edita’l a GitHub i fes <i>commit</i>). Als alumnes els canvia en 1–2 minuts.</p>
 <div class="row"><label><input type="checkbox" id="cl"> Bloqueja la <b>teoria</b></label><label><input type="checkbox" id="ce"> Bloqueja també l’<b>editor SQL</b></label></div>
 <div class="row"><input type="text" id="cm" style="flex:1" value="Examen en curs. La teoria no està disponible fins que el professor la desbloquegi."></div>
-<div class="row"><input type="password" id="np" placeholder="Contrasenya nova (deixa-ho buit per mantenir l’actual)" autocomplete="new-password"><button class="btn" id="mk">Genera</button><button class="btn g" id="cp">Copia</button></div>
+<p class="m">Afegeix o canvia un professor (opcional; els actuals es mantenen):</p>
+<div class="row"><input type="text" id="nu" placeholder="Usuari" autocomplete="off"><input type="password" id="np" placeholder="Contrasenya" autocomplete="new-password"><button class="btn" id="mk">Genera</button><button class="btn g" id="cp">Copia</button></div>
 <textarea id="js" readonly></textarea></div>
 <script>
 const sha=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode('M0372|'+s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
 const $=i=>document.getElementById(i);let cfg={};
-function ui(){const ok=sessionStorage.getItem('prof')==='1',none=!cfg.teacherHash;
-$('login').hidden=ok||none;$('panel').hidden=!ok;$('gen').hidden=!(ok||none);
-if(none){$('msg').textContent='';$('gen').insertAdjacentHTML('afterbegin','<div class="tip">Encara no hi ha cap contrasenya configurada: crea’n una amb el generador.</div>')}
+function ui(){const ok=sessionStorage.getItem('prof')==='1',none=!cfg.teachers||!Object.keys(cfg.teachers).length;
+$('login').hidden=ok||none;$('panel').hidden=!ok;$('gen').hidden=!(ok||none);$('who').textContent=sessionStorage.getItem('profuser')||'';
+if(none&&!$('gen').dataset.n){$('gen').dataset.n=1;$('gen').insertAdjacentHTML('afterbegin','<div class="tip">Encara no hi ha cap professor: crea’n un amb el generador.</div>')}
 $('state').textContent=cfg.locked?'ACTIU 🔒':'desactivat';$('cl').checked=!!cfg.locked;$('ce').checked=!!cfg.blockEditor;if(cfg.message)$('cm').value=cfg.message}
 (async()=>{try{cfg=await(await fetch('assets/data/exam.json?t='+Date.now(),{cache:'no-store'})).json()}catch(e){}ui();
-$('in').onclick=async()=>{if(await sha($('pw').value)===cfg.teacherHash){sessionStorage.setItem('prof','1');$('pw').value='';ui()}else $('msg').textContent='Contrasenya incorrecta.'};
+$('in').onclick=async()=>{const u=$('us').value.trim().toLowerCase();if(cfg.teachers&&cfg.teachers[u]&&cfg.teachers[u]===await sha(u+'|'+$('pw').value)){sessionStorage.setItem('prof','1');sessionStorage.setItem('profuser',u);$('pw').value='';ui()}else $('msg').textContent='Usuari o contrasenya incorrectes.'};
 $('pw').onkeydown=e=>{if(e.key=='Enter')$('in').click()};
-$('out').onclick=()=>{sessionStorage.removeItem('prof');ui()};
-$('mk').onclick=async()=>{const h=$('np').value?await sha($('np').value):(cfg.teacherHash||'');
-$('js').value=JSON.stringify({locked:$('cl').checked,blockEditor:$('ce').checked,message:$('cm').value,teacherHash:h},null,2)};
+$('out').onclick=()=>{sessionStorage.removeItem('prof');sessionStorage.removeItem('profuser');location.href='index.html'};
+$('mk').onclick=async()=>{const t={...(cfg.teachers||{})},u=$('nu').value.trim().toLowerCase();if(u&&$('np').value)t[u]=await sha(u+'|'+$('np').value);
+$('js').value=JSON.stringify({locked:$('cl').checked,blockEditor:$('ce').checked,message:$('cm').value,teachers:t},null,2)};
 $('cp').onclick=()=>{$('js').select();document.execCommand('copy')}})();
-</script></main><footer><div class="w">ASIX · M0372 Gestió de bases de dades · Curs 2026-2027 · Nom del docent · <a href="professor.html" style="color:#cfdcec">🔒 Professor</a></div></footer><a class="btn home" href="index.html"><span class="a">⌂</span> Inici</a><script src="assets/js/lock.js"></script></body></html>
+</script></main><footer><div class="w">ASIX · M0372 Gestió de bases de dades · Curs 2026-2027 · Nom del docent · <a href="professor.html" style="color:#cfdcec">🔒 Professor</a></div></footer><a class="btn home" href="inici.html"><span class="a">⌂</span> Inici</a><script src="assets/js/lock.js"></script></body></html>

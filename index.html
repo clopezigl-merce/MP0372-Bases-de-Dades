@@ -6,11 +6,8 @@
 <div id="lg" class="tip who" hidden><b>Accés professor</b><div class="row"><input id="us" type="text" placeholder="Usuari" autocomplete="username"><input id="pw" type="password" placeholder="Contrasenya" autocomplete="current-password"><button class="btn" id="in">Entra</button></div><p id="msg" class="err"></p></div>
 <script>
 const $=i=>document.getElementById(i);
-const sha=async s=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode('M0372|'+s)))].map(x=>x.toString(16).padStart(2,'0')).join('');
-$('alu').onclick=()=>{sessionStorage.removeItem('prof');sessionStorage.removeItem('profuser')};
+$('alu').onclick=async e=>{e.preventDefault();try{await Exam.logout()}catch(x){}location.href='inici.html'};
 $('pcard').onclick=()=>{$('lg').hidden=false;$('us').focus()};
 $('pw').onkeydown=e=>{if(e.key=='Enter')$('in').click()};
-$('in').onclick=async()=>{try{const c=await(await fetch('assets/data/exam.json?t='+Date.now(),{cache:'no-store'})).json(),u=$('us').value.trim().toLowerCase();
-if(c.teachers&&c.teachers[u]&&c.teachers[u]===await sha(u+'|'+$('pw').value)){sessionStorage.setItem('prof','1');sessionStorage.setItem('profuser',u);location.href='inici.html'}
-else $('msg').textContent='Usuari o contrasenya incorrectes.'}catch(e){$('msg').textContent='No s’ha pogut comprovar l’accés.'}};
-</script></main><footer><div class="w">ASIX · M0372 Gestió de bases de dades · Curs 2026-2027 · Nom del docent · <a href="professor.html" style="color:#cfdcec">🔒 Professor</a></div></footer><script src="assets/js/lock.js"></script></body></html>
+$('in').onclick=async()=>{$('msg').textContent='';if(await Exam.login($('us').value,$('pw').value))location.href='inici.html';else $('msg').textContent='Usuari o contrasenya incorrectes.'};
+</script></main><footer><div class="w">ASIX · M0372 Gestió de bases de dades · Curs 2026-2027 · Nom del docent · <a href="professor.html" style="color:#cfdcec">🔒 Professor</a></div></footer><script src="assets/data/firebase-config.js"></script><script src="assets/js/lock.js"></script></body></html>

@@ -23,4 +23,4 @@ $('bl').onclick=()=>save(true);$('ub').onclick=()=>save(false);$('ce').onchange=
 $('in').onclick=async()=>{if(await Exam.login($('us').value,$('pw').value)){$('pw').value='';ui()}else $('msg').textContent='Usuari o contrasenya incorrectes.'};
 $('pw').onkeydown=e=>{if(e.key=='Enter')$('in').click()};
 $('out').onclick=async()=>{await Exam.logout();location.href='index.html'};ui()});
-</script></main><footer><div class="w">ASIX · M0372 Gestió de bases de dades · Curs 2026-2027 · Nom del docent · <a href="professor.html" style="color:#cfdcec">🔒 Professor</a></div></footer><a class="btn home" href="inici.html"><span class="a">⌂</span> Inici</a><script src="assets/data/firebase-config.js"></script><script src="assets/js/lock.js"></script></body></html>
+</script></main><footer><div class="w">ASIX · M0372 Gestió de bases de dades · Curs 2026-2027 · <span id="docent">Docents: Carles i Bruno</span> · <a href="professor.html" style="color:#cfdcec">🔒 Professor</a></div></footer><a class="btn home" href="inici.html"><span class="a">⌂</span> Inici</a><script src="assets/data/firebase-config.js"></script><script src="assets/js/lock.js"></script></body></html>

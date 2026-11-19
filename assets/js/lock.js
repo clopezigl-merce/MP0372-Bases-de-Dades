@@ -21,7 +21,7 @@ async save(o){if(!FB)throw new Error('Firebase no configurat');const f=await ini
 window.Exam=Exam;
 const b=document.body,type=b.dataset.lock;let first=true;
 const cut=setTimeout(()=>{b.style.visibility='visible'},5000);
-async function apply(cfg){const who=await Exam.who();
+async function apply(cfg){const who=await Exam.who();const dc=document.getElementById('docent');if(dc)dc.textContent=who?'Docent: '+who.charAt(0).toUpperCase()+who.slice(1):'Docents: Carles i Bruno';
 const locked=!!type&&!!cfg.locked&&(type=='teoria'||!!cfg.blockEditor);
 let bar=document.getElementById('pbar');
 if(who){if(!bar){bar=document.createElement('div');bar.id='pbar';bar.className='pbar';b.prepend(bar)}
